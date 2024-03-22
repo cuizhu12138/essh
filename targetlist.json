@@ -1,0 +1,22 @@
+{
+    "allhost": [
+        {
+            "user": "Eutopia",
+            "pwd": "123456",
+            "host": {
+                "address": "localhost",
+                "port": 22
+            },
+            "description": "handsome boy"
+        },
+        {
+            "user": "Eutopia2",
+            "pwd": "1234567",
+            "host": {
+                "address": "localhost",
+                "port": 22
+            },
+            "description": "hand boy"
+        }
+    ]
+}
