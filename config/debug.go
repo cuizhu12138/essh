@@ -1,5 +1,5 @@
-package config 
+package config
 
 var (
-	DebugMode = true;
+	DebugMode = false
 )
