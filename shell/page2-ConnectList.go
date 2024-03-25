@@ -7,20 +7,19 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 
 	"essh/config"
-	"essh/data"
 )
 
 // page2 connectlist
 type connectlist struct {
-	choices  []data.Target    // 可供选择的东西
+	choices  []Target    // 可供选择的东西
 	cursor   int              // 指针
 	selected map[int]struct{} // 哪些items被选择了
 }
 
-func initconnectlist() connectlist {
+func Initconnectlist() connectlist {
 	return connectlist{
 		// items list
-		choices:  data.HostList,
+		choices:  HostList,
 		cursor:   0,
 		selected: make(map[int]struct{}),
 	}
@@ -63,11 +62,9 @@ func (m connectlist) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.selected[m.cursor] = struct{}{}
 			}
 		case "l":
-			s.page = 1
+			S.page = 1
+			return S, nil
 		}
-	}
-	if s.page == 1 {
-		return s, nil
 	}
 	// Return the updated model to the Bubble Tea runtime for processing.
 	// Note that we're not returning a command.
@@ -83,7 +80,7 @@ func (m connectlist) View() string {
 	)
 
 	// The header
-	builder.WriteString("use up or down to choose you want")
+	builder.WriteString("Use up or down to choose you want")
 	builder.WriteString("\n\n")
 	for i, choice := range m.choices {
 		// Is the cursor pointing at this choice?
@@ -109,7 +106,7 @@ func (m connectlist) View() string {
 
 	// which 默认值
 	builder.WriteString("--------- SSH Details ---------\n")
-	builder.WriteString(fmt.Sprintf("%-17s%s\n%-17s%s\n%-17s%s\n", "Host", m.choices[which].Host.Address, "User", m.choices[which].User, "Description", m.choices[which].Description))
+	builder.WriteString(fmt.Sprintf("%-17s%s\n%-17s%s\n%-17s%s\n%-17s%s\n", "Host", m.choices[which].Host.Address, "User", m.choices[which].User, "Port", fmt.Sprintf("%d", m.choices[which].Host.Port), "Description", m.choices[which].Description))
 
 	// debug
 	if config.DebugMode {

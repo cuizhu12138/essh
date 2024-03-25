@@ -1,7 +1,6 @@
 package shell
 
 import (
-	"essh/data"
 	"fmt"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -12,6 +11,7 @@ type state struct {
 	page        int
 	Home        home
 	Connectlist connectlist
+	AddHost     addhost
 }
 
 var (
@@ -21,15 +21,15 @@ var (
 	green   = lipgloss.NewStyle().Foreground(lipgloss.Color("#45b787"))
 	purple  = lipgloss.NewStyle().Foreground(lipgloss.Color("#951c48")).Width(15)
 	purple2 = lipgloss.NewStyle().Foreground(lipgloss.Color("#813c85"))
-
-	s state
+	S       state
 )
 
 func initstate() state {
 	return state{
 		page:        1,
 		Home:        inithome(),
-		Connectlist: initconnectlist(),
+		Connectlist: Initconnectlist(),
+		AddHost:     initaddhost(),
 	}
 }
 
@@ -55,9 +55,9 @@ func (m state) View() string {
 }
 
 func Srun() {
-	data.InitHost()
-	s = initstate()
-	p := tea.NewProgram(&s)
+	InitHost()
+	S = initstate()
+	p := tea.NewProgram(&S)
 	if _, err := p.Run(); err != nil {
 		// fmt.Printf("Alas, there's been an error: %v", err)
 		panic(fmt.Errorf("error in shellmain : %w", err))

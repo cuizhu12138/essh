@@ -11,14 +11,14 @@ import (
 
 // page1 home
 type home struct {
-	choices  []string         // 可供选择的东西
-	cursor   int              // 指针
+	choices []string // 可供选择的东西
+	cursor  int      // 指针
 }
 
 func inithome() home {
 	return home{
 		// items list
-		choices:  []string{"add new host", "connect to host"},
+		choices: []string{"connect to host", "add new host", "delete host"},
 	}
 }
 
@@ -52,11 +52,13 @@ func (m home) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		// The "enter" key and the spacebar (a literal space) toggle
 		// home界面选择
 		case "enter", " ":
-			s.page = m.cursor + 2
+			S.page = m.cursor + 2
 		}
 	}
-	if s.page == 2 {
-		return s.Connectlist.Update(msg)
+	if S.page == 2 {
+		return S.Connectlist.Update(nil)
+	} else if S.page == 3 {
+		return S.AddHost.Update(nil)
 	}
 	// Return the updated model to the Bubble Tea runtime for processing.
 	// Note that we're not returning a command.
@@ -70,7 +72,7 @@ func (m home) View() string {
 	var debug string = ""
 
 	// The header
-	builder.WriteString("use up or down to choose you want")
+	builder.WriteString("Use up or down to choose you want")
 	builder.WriteString("\n\n")
 	for i, choice := range m.choices {
 		// Is the cursor pointing at this choice?
